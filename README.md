@@ -1,2 +1,6 @@
 # VAE
-VAE's implementation
+VAE's implementation:
+  Vannila VAE 
+
+VAE's Tasks:
+   celebA face reconstruction 
