@@ -7,12 +7,6 @@ from torch.utils.tensorboard import SummaryWriter
 
 from Models import VAE
 
-writer = SummaryWriter('runs/copy_task_lvf_experiment_1')
-
-""" info: encode characters array to one vector array that represent input sequence.
-    input: [int] sequence , int dict_size , int seq_len, int batch_size
-    output: [dict_size*1 vector]"""
-
 
 # ---- hyper parameters ---- #
 lr = 0.001
