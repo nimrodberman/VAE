@@ -4,7 +4,7 @@ import torch
 
 
 class VAE(nn.Module):
-    def __init__(self, sampleSize, latentSpaceSize, beta):
+    def __init__(self, sampleSize: int, latentSpaceSize: int, beta: int):
         super(VAE, self).__init__()
         # the encoder component constructed from 2 hidden layer with LeakyReLU as activation function
         self.encoder = nn.Sequential(
@@ -22,7 +22,7 @@ class VAE(nn.Module):
             nn.Linear(latentSpaceSize ** 2, sampleSize, True),
             nn.Sigmoid()
         )
-        # the mean and variance connection
+        # the mean and variance connection layers
         self.mu_layer = nn.Linear(latentSpaceSize * 2, latentSpaceSize)
         self.var_layer = nn.Linear(latentSpaceSize * 2, latentSpaceSize)
         self.beta = beta
