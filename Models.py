@@ -11,6 +11,7 @@ class VAE(nn.Module):
             nn.Linear(sampleSize, latentSpaceSize ** 2, True),
             nn.LeakyReLU(),
             nn.Linear(latentSpaceSize ** 2, latentSpaceSize * 2, True),
+            nn.LeakyReLU(),
         )
 
         # the decoder component constructed from 2 hidden layer with LeakyReLU as activation function
@@ -21,6 +22,9 @@ class VAE(nn.Module):
             nn.Linear(latentSpaceSize ** 2, sampleSize, True),
             nn.Sigmoid()
         )
+        # the mean and variance connection
+        self.mu_layer = nn.Linear(latentSpaceSize * 2, latentSpaceSize)
+        self.var_layer = nn.Linear(latentSpaceSize * 2, latentSpaceSize)
         self.beta = beta
 
     def reparameterize(self, mu, logVar, training):
@@ -32,9 +36,9 @@ class VAE(nn.Module):
             return mu
 
     def forward(self, x, training):
-        muAndVar = self.encoder(x).view(-1, 2, self.latentSpaceSize)
-        mu = muAndVar[:, 0, :]
-        logVar = muAndVar[:, 1, :]
+        muAndVar = self.encoder(x)
+        mu = self.mu_layer(muAndVar)
+        logVar = self.var_layer(muAndVar)
         z = self.reparameterize(mu, logVar, training)
         x_recon = self.decode(z)
         return x_recon, mu, logVar
