@@ -6,17 +6,22 @@ from torch import Tensor
 from torch.utils.tensorboard import SummaryWriter
 
 from Models import VAE
+from CelebsFacesTask import CelebsFacesTask
 
-
-# ---- hyper parameters ---- #
+# ---- hyper parameters, model parameters and task parameters ---- #
+trainSize = 1000
+testSize = 50
 lr = 0.001
 beta = 1
 
 # ---- collect and prepare data ---- #
+celebsDataSet: CelebsFacesTask = CelebsFacesTask(trainSize, testSize)
 
 
 # ---- create model and optimizer ---- #
-ourModel = VAE()
+latentSpaceSize = 10
+# TODO - change the None
+ourModel = VAE(None, latentSpaceSize, beta)
 ourOptimizer = torch.optim.Adam(ourModel.parameters(), lr=lr)
 
 def trainModel(inputs: Tensor, epochs, optimizer, model: VAE):
